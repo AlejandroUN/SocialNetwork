@@ -1,0 +1,169 @@
+to runserver 
+
+	python manage.py runserver
+
+Apps
+
+When we create apps we should put the name that we find in the file 'apps.py' in our apps folder into the
+'setting.py' file in the project folder in the section of installed apps
+for example
+
+	'blog.apps.BlogConfig',
+
+Urls
+
+When we creeate aurl in the main projjects's urls file it will automatically use just the urls we've created
+not the default urls Django has for the pure beginning
+
+Templates
+
+Django looks for templates
+so that, when we create a templates folder for an specific app (for example an app whose name is blog)
+we should create another folder into the templates app folder whose name is will be the same as the app's name itself (it will be called blog again)
+
+in Django static files like css files should be in a folder called "static"
+we'll create this folder inside the app directory and again, inside this static folder
+we'll create a folder with the app name
+
+Admin Page
+
+http://127.0.0.1:8000/admin
+
+we run a migration to create the database and add a bunch of default tables
+
+	python manage.py makemigrations
+
+the command above it prepares django to make changes, now to make changes
+
+	python manage.py migrate
+
+Now we have a users tables
+
+now in the cmd create a user admin using
+
+	python manage.py createsuperuser
+
+	enter a username and email and a password
+
+	username: Alejandro
+	(testing321)
+
+	
+ORM
+
+Object relational mapper, allow us to access our database
+
+in django we represent the objects with models
+
+we create them inside the models.py file we have in our app
+
+to see the exact sql commands that a migration will run we type in cmd
+
+	python manage.py sqlmigrate nameOfTheApp 0001
+
+to run the python-django shell
+
+	python manage.py shell
+
+we can run python code there and see our django objects
+
+for import an object we've created 
+
+	from appName.models import modelName
+
+for import the user model django creates by default
+
+	from django.contrib.auth.models import User
+
+To see all values (raws/data) in a model
+	
+	modelName.objects.all()
+
+to get just the first result
+
+	modelName.objects.first()
+
+to filter 
+
+	modelName.objects.filter(expression)
+
+	Exemple:
+
+		User.objects.filter(username='Juan')
+
+if we just want the first result of that filter we just add first
+
+	modelName.objects.filter(expression).first()
+
+to save it in a variable 
+
+	variableName = modelName.objects.filter(expression).first
+
+to see the atributes
+
+	exemple:
+
+		user.id
+		user.pk
+		and so on...
+
+we could use the id aussi
+
+	exemple:
+
+		user = User.objects.get(id=1)
+
+to create an object of a model that uses a foreign key from another model and save it
+
+	exemple:
+		
+		post_1 = Post(title='Blog 1', content= 'First Post Content!', author= user)
+		post_1.save()
+
+		ou aussi avec un seul command
+
+		user.post_set.create(title='Blog 3',content='Third Post')		
+
+to get all the models that have a same foreign key
+we have to do two commands in the next order
+
+	primaryKeyModelVariable.modelname_set
+	primaryKeyModelVariable.modelname_set.all()
+
+	exemple:
+
+		userAlejandro.post_set
+		userAlejandro.post_set.all()
+
+To see and edit in the django admin site the models we've created
+we have to register them in the app file named admin.py
+
+	incroyable :')
+
+
+Djangorestframework is for packaging data from our server for unpackaging data so that the server can read it
+
+djangorestframework-simplejwt if or have a token
+
+django-cors-headers basically the way we can restrict access to our web server
+
+psycopg2 it seems that uses threads to interact with the postgreSQL database for example various inserts and that
+
+drf-spectacular 
+
+install thsi in the SocialNetwork project pip install django-crispy-forms
+
+
+DON'T FORGET THAT WHENEVER WE CREATE A MODEL IN A PROJECT OR APP 
+WE HAVE TO REGISTER IT IN THE PROJECT'S OR APP'S admin.py file
+
+for django shell
+
+	python3 manage.py shell
+
+if we want to create a profile when a user is created
+create a signals.py file in the app and do what's there
+and define it in the apps directory
+
+
+

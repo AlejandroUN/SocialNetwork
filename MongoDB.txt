@@ -1,0 +1,221 @@
+MongoDBServer
+	Instalar la base de datos en nuestro computador
+
+MongoDB Compass
+	Interfaz gráfica para nuestra base de datos NoSQL
+
+MongoDB Atlas
+	Base de datos en la  nube con MongoDB ya instalada
+
+después de instalado debemos crear una carpeta 'data' en C: y dentro de esa carpeta crear una carpeta llamada 'db'
+
+ejecutamos mongod en una cmd para correr nuestro servidor mongo 
+y después mongo en otro cmd para conectarse a nuestro servidor
+y empezar a hacer consultas a nuestra base de datos, es decir, interactuar con nuestro servidor
+el shell de mongo pues
+
+
+Base de datos
+
+	Programa que se encarga de almacenar todos los datos relacionados con el contexto
+	de una aplicación
+	Dentro de la base de datos están las colecciones
+	
+Colecciones
+
+	Lo que en las SQL son las tablas pero en NoSQl son colleciones
+	Usuarios, productos, categorias, etc
+	Podríamos estar guardando ór ejemplo en la coleccion usuarios
+	"name", "created", etc
+	En MongoDB stos datos son guardados dentro de un objeto  JSON
+	{
+		name: "sue",
+		age: 26
+		groups: [ "news", "sports" ]
+	}
+	Una colección son varios de estos de arriba, varios JSOn son una colección
+	Estos de arriba son los famosos documentos xd
+
+Documentos
+
+	Dentro de las colecciones están los documentos
+	Estos datos entre llaves son llamados documentos
+	{
+		name: "sue",
+		age: 26
+		groups: [ "news", "sports" ]
+	}
+
+Mongo Shell
+	ejecutamos como admins mongod en una consola para ejecutar el servidor
+	y en otra como admins también ejecutamos mongo que será el shell de mongo
+	que es un interprete de JS así que podremos poner código de js
+
+	Podremos hacer operaciones básicas
+	Utilizar librerías
+	Definir y utilizar funciones
+
+	También tenemos unas palabras claves de MongoDB
+
+	Por defecto estamos conectados a una base de datos llamada shell
+	con db miramos a qué base de datos estamos actualmente conectados
+
+	con show dbs miramos las bases de datos que hay
+
+	db.help() comandos que podremos utilizar en nuestra base de datos
+
+	Para crear una base de datos nuevas utilizamos
+		use nombredelabasededatos
+	
+	pero mongoDB no va crear como tal la base de datos hasta que mínimo
+	insertemos un dato
+
+	y para insertar una colección aún no creada y que mongo nos creará automáticamente
+
+		db.nombreColeccion.insert({"name": "laptop"})	
+	
+	ahora si está creada la base de datos
+	show collections   para ver las colecciones
+
+	para eliminar la base de datos actual
+
+		db.dropDatabase()
+
+	para crear una colección
+
+		db.createCollection("users")
+
+	para eliminar una colección
+
+		db.nombreColecciónAEliminar.drop()
+
+	para ver todos los documentos de una colección
+	
+		db.nombreColección.find()
+
+	para verlos de manera más ordenada
+	
+mongodb para lo que le pasamos en formato json a un fomrato llamado bson que es binario
+
+Para guardar un documento en una colección
+		
+	db.nombreColección.insert(Documento en formato json)
+
+En esta tipo de base de datos, puedo guardar documentos en una misma coleccion pero que no tienen la misma estructura
+muy a diferencia de la SQL
+
+	ejemplo:
+		{ "_id" : ObjectId("620bddaffa45f3b4bf3dc31f"), "name" : "musique" }                                    
+	{
+		"_id" : ObjectId("620bddf1fa45f3b4bf3dc320"),                                                           
+		"name" : "art",                                                                                         
+		"price" : 120.2                                                                                 
+	}  
+
+Para insertar varios documentos a la vez creo una lista y separo por comas 
+los documentos que empiezan y terminan en corchetes {} 
+
+	db.posts.insert([{},{}])
+
+Si quiero encontrar un documento en específico
+
+	db.nombreColeccion.find(especificación)
+
+	ejemplo:
+	
+		db.users.find({name: "Juan"})
+
+incroyable :')
+
+También podriamos buscar varios documentos con una especificación, lo hacemos de la misma
+manera de arriba simplemente que poniendo la especificación que todos cumplen
+
+	Ejemplo:
+
+		db.users.find({gustos: "musique"}).pretty()
+
+Mejor dicho, find() busca documentos que coincidan con las especificaciones que se le ingresen
+
+Si quiero UN SOLO documento con las especificaciones utilizo, el primero de la lista de resultados más específicamente
+
+	db.nombreColeccion.findOne(especificación)
+
+Si quisiera solo algunas propiedades del documento pongo el nombre de la propiedad y al lado un 1
+si quiero que no me apareza alguno le pongo cero al lado
+
+		db.nombreColeccion.findOne({especificación}, {"atributo1": 1, "atributo2":1, "atributoquenoquiero": 0})
+
+	Ejemplo:
+
+		db.users.find({gustos: "musique"}, {"name": 1, "gustos":1, "_id":0}).pretty()
+
+para organizar los documentos que me muestra utilizo sort()
+
+	Ejemplo:
+	
+		db.users.find({gustos: "musique"}).sort({name:1})
+
+Si quiero ver solo un n número de documentos utilizo limit()
+
+	db.nombreColeccion.find().limit(n)
+
+	Ejempl0:
+
+		db.users.find().limit(5)	
+
+O si queremos contar cuántos documentos hay en una coleccion
+
+	db.nombreColeccion.count()
+
+también podemos hacer operaciones
+
+	db.users.find().forEach(user => print("User Name: " + user.name))
+
+para mcambiar atributos
+
+	db.nombreColeecion.update({loqueuqeremosbuscar}, {loquequeremosreemplazar})
+
+	Exemple:
+	
+		db.users.update({"name": "Juan"}, {"carrera": "medicina"})
+
+Neanmoins, lo que pongamos en {loquequeremosreemplazar} será de hecho todo lo que tendrá ese documento
+no editará solamente un atributo, sino que {loquequeremosreemplazar} se volverá todos los atributos del documento en sí
+
+Para editar un atributo otro en específico ponemos $set ante de lo que vayamos
+a modificar que estará entre corchetes
+
+	Exemple:
+	
+		db.users.update({"name": "Juan"}, {$set: {"carrera": "medicina"}})
+
+Para adicionarle un atributo le agregamos {upsert: true} de la siguiente manera
+
+	Exemple:
+	
+		db.users.update({"name": "Juan"}, {$set: {"empatía": 10}}, {upsert: true})
+
+Si quisieramos por ejemplo quisieramos incrementar un valor sería con $inc (refiriendose a incrementar)
+
+	db.nombreColeecion.update({loqueuqeremosbuscar}, {$inc, {"loquequeremosincrementar": cantidad que le vamos a incrementar}})
+
+	Exemple:
+	
+		db.users.update({"name": "Juan"}, {$inc: {"empatía": 1}})
+	
+Si quiero cambiar el nombre de un atributo o propiedad es con $rename
+
+	Exemple:
+	
+		db.users.update({"name": "Juan"}, {$rename: {"empatía": "amabilidad"}})
+
+Para eliminar algún documento
+
+	Exemple:
+
+		db.users.remove({"name": "Cris"})
+
+Si quisiera eliminar TODOS los documentos de una colección
+
+	db.nombreColeccion.remove({})
+

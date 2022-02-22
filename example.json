@@ -1,0 +1,16 @@
+db.users.insert([
+	{
+		"name": "Cris",
+		"age": 26,
+		"description": "c'est moi",
+		"gustos": ["musique", "gym","medecin"],
+		"created at": new Date()
+	},
+	{
+		"name": "Loren",
+		"age": 6,
+		"description": "la meilleur",
+		"gustos": ["musique", "des videos","medecin"],
+		"created at": new Date()
+	}
+])
