@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 #posts and users we'll be related
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 
@@ -20,4 +21,11 @@ class Post(models.Model):
 
 	#This will format better this a post object when we print it
 	def __str__(self):
-		return self.title
+		return self.title		
+
+		#redirect will redirect you to a specific route
+		#reverse will return url to that route as a string
+	#The following function is to return the path to any specific insta,ce as a specific post
+	def get_absolute_url(self):
+		return reverse('post-detail', kwargs={'pk':self.pk})
+
