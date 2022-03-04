@@ -1,2 +1,2 @@
 # SocialNetwork
-Social Network using Django 
+Social Network using Django, Bootstrap and SQLite
